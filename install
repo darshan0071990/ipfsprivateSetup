@@ -34,7 +34,7 @@ ipfs_version="v${ipfs_version#v}"
 echo ">>> Installing IPFS version $ipfs_version"
 
 tar_gz_destination=/tmp/go-ipfs_${ipfs_version}_${ipfs_arch}.tar.gz
-wget "https://dist.ipfs.io/go-ipfs/${ipfs_version}/go-ipfs_${ipfs_version}_${ipfs_arch}.tar.gz" \
+wget --no-check-certificate "https://dist.ipfs.io/go-ipfs/${ipfs_version}/go-ipfs_${ipfs_version}_${ipfs_arch}.tar.gz" \
   -q --show-progress \
   -O $tar_gz_destination
 
@@ -97,7 +97,7 @@ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", 
 echo 'Removing default bootstrap nodes...'
 
 IPFS_PATH=~/.ipfs ipfs bootstrap rm --all
-ipfs bootstrap add /ip4/192.168.1.201/tcp/4001/ipfs/QmVg8TQYCNfUCbxhkDAdrwqvxmqGQXpDUfsCns84KrMKcf
+ipfs bootstrap add /ip4/192.168.1.39/tcp/4001/ipfs/QmXsGnWVc9jk3mp3evYG2EgXu9pDEpTLmqxLTwfmdQZ6D7
 export LIBP2P_FORCE_PNET=1 && IPFS_PATH=~/.ipfs ipfs daemon > ipfs.log &
 rm $tar_gz_destination
 
