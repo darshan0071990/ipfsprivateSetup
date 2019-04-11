@@ -49,7 +49,6 @@ sudo install /tmp/go-ipfs/ipfs $ipfs_destination
 
 echo ">>> Starting IPFS"
 
-export LIBP2P_FORCE_PNET=1
 # Maybe initialize IPFS
 [ ! -d ~/.ipfs ] && ipfs init
 
@@ -88,7 +87,8 @@ export LIBP2P_FORCE_PNET=1
 # else
 #   echo ">>> Unable to detect init system - you don't seem to be using systemd or upstart. The IPFS daemon will have to be controlled manually."
 # fi
-ipfs daemon & > ipfs.log
+cp swarm.key ~/.ipfs/
+
 echo ">>>Bootstrapping IPFS for Private Network"
 ipfs config Addresses.API /ip4/0.0.0.0/tcp/5001
 ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/8080
@@ -96,7 +96,7 @@ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST"]'
 echo 'Removing default bootstrap nodes...'
 ipfs bootstrap rm -all
-
+export LIBP2P_FORCE_PNET=1 && IPFS_PATH=~/.ipfs ipfs daemon & > ipfs.log
 rm $tar_gz_destination
 
 echo ">>> All done."
