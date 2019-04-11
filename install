@@ -54,42 +54,42 @@ export LIBP2P_FORCE_PNET=1
 [ ! -d ~/.ipfs ] && ipfs init
 
 # Install and enable bring-up configurations for IPFS daemon
-init_system=$(get_init_system)
-ipfs_path=$HOME/.ipfs
-ipfs_user=$(whoami)
-ipfs_group=$(id -gn)
+# init_system=$(get_init_system)
+# ipfs_path=$HOME/.ipfs
+# ipfs_user=$(whoami)
+# ipfs_group=$(id -gn)
 
-if [ $init_system == "systemd" ]; then
-  cat ./templates/ipfs-daemon.service.tpl | \
-  sed "s|{{ipfs_path}}|${ipfs_path}|g" | \
-  sed "s|{{ipfs_user}}|${ipfs_user}|g" | \
-  sed "s|{{ipfs_group}}|${ipfs_group}|g" | \
-  sudo tee /lib/systemd/system/ipfs-daemon.service > /dev/null
-
-  sudo systemctl daemon-reload
-  if [ "$mode" == "install" ]; then
-    sudo systemctl enable --now ipfs-daemon
-  elif [ "$mode" == "update" ]; then
-    sudo systemctl restart ipfs-daemon
-  fi
-elif [ $init_system == "upstart" ]; then
-  cat ./templates/ipfs-daemon.conf.tpl | \
-  sed "s|{{ipfs_path}}|${ipfs_path}|g" | \
-  sed "s|{{ipfs_user}}|${ipfs_user}|g" | \
-  sudo tee /etc/init/ipfs-daemon.conf > /dev/null
-
-  sudo initctl reload-configuration
-  if [ "$mode" == "install" ]; then
-    sudo service ipfs-daemon start
-  elif [ "$mode" == "update" ]; then
-    sudo service ipfs-daemon stop
-    sudo service ipfs-daemon start
-  fi
-else
-  echo ">>> Unable to detect init system - you don't seem to be using systemd or upstart. The IPFS daemon will have to be controlled manually."
-fi
-
-echo ">>>Bootstrap IPFS for Private Network"
+# if [ $init_system == "systemd" ]; then
+#   cat ./templates/ipfs-daemon.service.tpl | \
+#   sed "s|{{ipfs_path}}|${ipfs_path}|g" | \
+#   sed "s|{{ipfs_user}}|${ipfs_user}|g" | \
+#   sed "s|{{ipfs_group}}|${ipfs_group}|g" | \
+#   sudo tee /lib/systemd/system/ipfs-daemon.service > /dev/null
+#
+#   sudo systemctl daemon-reload
+#   if [ "$mode" == "install" ]; then
+#     sudo systemctl enable --now ipfs-daemon
+#   elif [ "$mode" == "update" ]; then
+#     sudo systemctl restart ipfs-daemon
+#   fi
+# elif [ $init_system == "upstart" ]; then
+#   cat ./templates/ipfs-daemon.conf.tpl | \
+#   sed "s|{{ipfs_path}}|${ipfs_path}|g" | \
+#   sed "s|{{ipfs_user}}|${ipfs_user}|g" | \
+#   sudo tee /etc/init/ipfs-daemon.conf > /dev/null
+#
+#   sudo initctl reload-configuration
+#   if [ "$mode" == "install" ]; then
+#     sudo service ipfs-daemon start
+#   elif [ "$mode" == "update" ]; then
+#     sudo service ipfs-daemon stop
+#     sudo service ipfs-daemon start
+#   fi
+# else
+#   echo ">>> Unable to detect init system - you don't seem to be using systemd or upstart. The IPFS daemon will have to be controlled manually."
+# fi
+ipfs daemon & > ipfs.log
+echo ">>>Bootstrapping IPFS for Private Network"
 ipfs config Addresses.API /ip4/0.0.0.0/tcp/5001
 ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/8080
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
