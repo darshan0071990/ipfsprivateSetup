@@ -98,7 +98,7 @@ echo 'Removing default bootstrap nodes...'
 
 IPFS_PATH=~/.ipfs ipfs bootstrap rm --all
 ipfs bootstrap add /ip4/192.168.1.201/tcp/4001/ipfs/QmVg8TQYCNfUCbxhkDAdrwqvxmqGQXpDUfsCns84KrMKcf
-export LIBP2P_FORCE_PNET=1 && IPFS_PATH=~/.ipfs ipfs daemon & > ipfs.log
+export LIBP2P_FORCE_PNET=1 && IPFS_PATH=~/.ipfs ipfs daemon > ipfs.log &
 rm $tar_gz_destination
 
 echo ">>> All done."
