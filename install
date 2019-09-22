@@ -97,7 +97,7 @@ ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", 
 echo 'Removing default bootstrap nodes...'
 
 IPFS_PATH=/home/pi/.ipfs ipfs bootstrap rm --all
-#ipfs bootstrap add /ip4/192.168.1.191/tcp/4001/ipfs/QmfNbtUheocZezntqg4GKkcKjko4Re3J9aQen1JqA5WLQd
+ipfs bootstrap add /ip4/192.168.1.39/tcp/4001/ipfs/QmWhhVASjdBxidJHovebM5iXA7eKbx8nPfM2efJfKhvu5X
 export LIBP2P_FORCE_PNET=1 && IPFS_PATH=/home/pi/.ipfs && ipfs daemon > ipfs.log &
 rm $tar_gz_destination
 
